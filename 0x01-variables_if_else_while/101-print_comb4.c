@@ -7,21 +7,23 @@
  */
 int main(void)
 {
-	int c, i;
+	int c, i, t;
 
-	for (c = '0'; c <= '9'; c++)
+	for (c = 0; c < 8; c++)
 	{
-		for (i = '0'; i <= '9'; i++)
+		for (i = c + 1; i < 9; i++)
 		{
-			if (c < i)
+			for (t = i + 1; t < 10; t++)
 			{
-				putchar(c);
-				putchar(i);
-				if (c != '8' || (c == '8' && i != '9'))
-				{
-					putchar(',');
-					putchar(' ');
-				}
+				putchar((c % 10) + '0');
+				putchar((i % 10) + '0');
+				putchar((t % 10) + '0');
+
+				if (c == 7 && i == 8 && t == 9)
+					continue;
+
+				putchar(',');
+				putchar(' ');
 			}
 		}
 	}
