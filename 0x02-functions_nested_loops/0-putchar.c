@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <main.h>
 /**
  * main - Drivers code by MOB
  * Description: Write a program that prints _putchar
