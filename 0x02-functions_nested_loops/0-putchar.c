@@ -9,7 +9,7 @@ int main(void)
 	char msg[] = "_putchar\n";
 	int m;
 
-	for (m = 0; m < 5; m++)
+	for (m = 0; m < 10; m++)
 	{
 		if (msg[m] == '\n')
 		{
