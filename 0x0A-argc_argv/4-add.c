@@ -1,41 +1,46 @@
 #include <stdio.h>
-#include <ctype.h>
 #include <stdlib.h>
-#include <string.h>
+#include <ctype.h>
+#define UNUSED(x)(void)(x)
 /**
- * checker - checks for valid input
- * @argc: argument count
- * @i: counter for argv[]
- * @j: counter for argv[][]
- * @argv: argument vector
- * Return: 0 on success, 1 on failure
- */
-int checker(int argc, int i, unsigned int j, char *argv[])
-{
-	for (i = 1; i <= argc; i++)
-	for (j = 0; argv[i] != '\0' && j < strlen(argv[i]); j++)
-	if (isdigit(argv[i][j]) == 0)
-	return (1);
-	return (0);
-}
-/**
- * main - adds all arguments together if they are digits.
- * @argc: argument count only accepts ints separated by spaces.
- * @argv: argument vector
- * Return: 0 on success, 1 on failure
+ * main - adds two numbers
+ * @argc:int
+ * @argv:array of strings
+ * Return: sum if all digits
  */
 int main(int argc, char *argv[])
 {
-	int result, i;
+	int i;
+	int j;
+	int c;
+	int sum;
+	char *s;
 
-	result = 0;
-	if (checker(argc, 1, 0, argv) == 1)
+	sum = 0;
+	c = 0;
+
+	i = 1;
+	while (i < argc)
 	{
-		printf("Error\n");
-		return (1);
+		s = argv[i];
+		j = 0;
+		while (s[j] != '\0')
+		{
+			if (s[j] < '0' || s[j] > '9')
+			{
+				printf("Error\n");
+				return (1);
+			}
+			j++;
+		}
+		i++;
 	}
+
 	for (i = 1; i < argc; i++)
-		result += atoi(argv[i]);
-	printf("%d\n", result);
+	{
+		c = atoi(argv[i]);
+		sum = sum + c;
+	}
+	printf("%d\n", sum);
 	return (0);
 }
