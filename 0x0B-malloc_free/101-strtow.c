@@ -1,98 +1,67 @@
 #include "main.h"
-#include <stdio.h>
 #include <stdlib.h>
-/**
- * word_count - count # of words to build 2D array
- * @s: char pointer
- * Return: num of words
- */
-int word_count(char *s)
-{
-	int words;
-	int i;
 
-	words = 0;
-	i = 0;
-	while (s[i] != '\0')
-	{
-		if (s[i] != ' ' && (s[i + 1] == ' ' || s[i + 1] == '\0'))
-			words++;
-		i++;
-	}
-	return (words);
-}
 /**
- * strtow - function splits a string into words
+ * ch_free_grid - frees a 2 dimensional array.
+ * @grid: multidimensional array of char.
+ * @height: height of the array.
  *
- * @s: char pointer
+ * Return: no return
+ */
+void ch_free_grid(char **grid, unsigned int height)
+{
+	if (grid != NULL && height != 0)
+	{
+		for (; height > 0; height--)
+			free(grid[height]);
+		free(grid[height]);
+		free(grid);
+	}
+}
+
+/**
+ * strtow - splits a string into words.
+ * @str: string.
  *
- * Return: pointer to array of strings
+ * Return: pointer of an array of integers
  */
 char **strtow(char *str)
 {
-	int i, j, k, m, words;
-	char **s;
+	char **aout;
+	unsigned int c, height, i, j, a1;
 
-	if (str == NULL)
+	if (str == NULL || *str == '\0')
 		return (NULL);
-
-	words = word_count(str);
-
-	s = malloc((words + 1) * sizeof(char *));
-	if (s == NULL)
-		return (NULL);
-	i = 0;
-	m = 0;
-	while (i < words)
+	for (c = height = 0; str[c] != '\0'; c++)
+		if (str[c] != ' ' && (str[c + 1] == ' ' || str[c + 1] == '\0'))
+			height++;
+	aout = malloc((height + 1) * sizeof(char *));
+	if (aout == NULL || height == 0)
 	{
-		j = m;
-		while (str[j] != '\0')
+		free(aout);
+		return (NULL);
+	}
+	for (i = a1 = 0; i < height; i++)
+	{
+		for (c = a1; str[c] != '\0'; c++)
 		{
-			if (str[j] != ' ' && str[j + 1] == ' ')
+			if (str[c] == ' ')
+				a1++;
+			if (str[c] != ' ' && (str[c + 1] == ' ' || str[c + 1] == '\0'))
 			{
-				j = m + 1;
+				aout[i] = malloc((c - a1 + 2) * sizeof(char));
+				if (aout[i] == NULL)
+				{
+					ch_free_grid(aout, i);
+					return (NULL);
+				}
 				break;
 			}
-			j++;
 		}
-		s[i] = malloc(j * sizeof(char));
-		if (s[i] == NULL)
-		{
-			while (i >= 0)
-			{
-				free(s[i]);
-				i--;
-			}
-			free(s);
-		}
-		i++;
+		for (j = 0; a1 <= c; a1++, j++)
+			aout[i][j] = str[a1];
+		aout[i][j] = '\0';
 	}
-	i = 0;
-	j = 0;
-	if (str[0] == ' ')
-		j++;
-	while (i < words)
-	{
-		k = 0;
-		while (str[j] != '\0')
-		{
-			if (str[j] != ' ')
-			{
-				s[i][k] = str[j];
-				j++;
-				k++;
-			}
-			else if (str[j] == ' ' && str[j - 1] != ' ')
-			{
-				j++;
-				k++;
-				break;
-			}
-			else
-				j++;
-		}
-		s[i][k] = '\0';
-		i++;
-	}
-	return (s);
+	aout[i] = NULL;
+	return (aout);
 }

@@ -1,57 +1,49 @@
 #include "main.h"
 #include <stdio.h>
 #include <stdlib.h>
+
 /**
- * argstostr - concatenates all arguments of your program
+ * argstostr - function that concatenates all the arguments of your program
  *
- * @ac: int
- * @av: int
- * Return: char pointer
+ * @ac: argument count
+ * @av: pointer to a string of pointers to strings
+ *
+ * Return: address of the newly allocated memory
  */
+
 char *argstostr(int ac, char **av)
 {
-	char *s;
-	int i;
-	int j;
-	int k;
-	int size;
+	int i, j, k;
+	int sumlen = 0;
+	char *arg_concat;
 
-	size = 0;
 	if (ac == 0 || av == NULL)
 		return (NULL);
 
-	i = 0;
-	while (i < ac)
+	for (i = 0; i < ac; i++)
 	{
-		j = 0;
-		while (av[i][j] != '\0')
-		{
-			size++;
-			j++;
-		}
-		i++;
+		for (j = 0; av[i][j] != '\0'; j++)
+			sumlen++;
+		sumlen++;
 	}
-	size = size + ac + 1;
+	sumlen++;
 
-	s = malloc(size * sizeof(char));
-	if (s == 0)
-		return (0);
+	arg_concat = malloc(sumlen * sizeof(char));
+	if (arg_concat == NULL)
+	{
+		free(arg_concat);
+		return (NULL);
+	}
 
 	k = 0;
-	i = 0;
-	while (i < ac)
+	for (i = 0; i < ac; i++)
 	{
-		j = 0;
-		while (av[i][j] != '\0')
+		for (j = 0; av[i][j] != '\0'; j++, k++)
 		{
-			s[k] = av[i][j];
-			j++;
-			k++;
+			arg_concat[k] = av[i][j];
 		}
-		s[k] = '\n';
+		arg_concat[k] = '\n';
 		k++;
-		i++;
 	}
-	s[k] = '\0';
-	return (s);
+	return (arg_concat);
 }
